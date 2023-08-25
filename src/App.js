@@ -10,9 +10,11 @@ class App extends Component {
     this.state = {
       monsters: [],
     };
+    console.log('constructor')
   }
 
   componentDidMount() {
+    console.log('componentDidMount')
     fetch('https://jsonplaceholder.typicode.com/users')
       .then(response => response.json())
       .then((users) => this.setState(() => {
@@ -23,8 +25,19 @@ class App extends Component {
   }
 
   render() {
+    console.log('render')
     return (
       <div className="App">
+        <input className="search-box" type="search" placeholder="Search Monsters" onChange={(event) => {
+          const searchStr = event.target.value.toLowerCase();
+          const filteredMonsters = this.state.monsters.filter((monster) => {
+            return monster.name.toLowerCase().includes(searchStr);
+          });
+
+          this.setState(() => {
+            return {monsters: filteredMonsters};
+          });
+        }} />
         {
           this.state.monsters.map((monster) => {
             return (
